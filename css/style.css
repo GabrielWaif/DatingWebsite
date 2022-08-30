@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+}
+
+header {
+  width: 100%;
+  background-color: rgb(127, 172, 255);
+  height: 5vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+header h1 {
+  margin-left: 20%;
+}
+
+nav {
+  background-color: rgb(231, 230, 230);
+  min-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#pessoa {
+  position: relative;
+  max-width: 900px;
+  height: 600px;
+  background-color: white;
+  border-radius: 4vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  overflow: hidden;
+  transition: transform 1s;
+}
+
+#pessoa:hover {
+  transform: translate(20%);
+}
+
+#pessoa img {
+  width: 50%;
+  background-color: black;
+}
+
+#info {
+  width: 450px;
+}
+
+#buttons {
+  margin-top: 8vh;
+  width: 500px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#buttons button {
+  border-radius: 100%;
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  background-color: white;
+}
+
+#buttons button:hover {
+  background-color: aqua;
+}
+
+.center-btn {
+  width: 100px;
+  height: 100px;
+}
+
+.side-btn {
+  width: 60px;
+  height: 60px;
+}
+
+@media (max-height: 900px) {
+  #pessoa {
+    height: 500px;
+  }
+}
+
+@media (max-width: 900px) {
+  #pessoa {
+    width: 90%;
+  }
+  #pessoa img {
+    width: 50%;
+  }
+}
+
+@media (max-width: 700px) {
+  #pessoa img {
+    width: 100%;
+  }
+  #info {
+    display: none;
+  }
+}
+
+@media (max-width: 550px) {
+  #buttons {
+    width: 90%;
+  }
+}
+
+@media (max-width: 500px) {
+    #buttons{
+        margin-top: 40px;
+}
