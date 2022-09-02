@@ -20,6 +20,10 @@ class Http {
   }
 }
 
+window.onload = () => {
+  UpdateProfile.callUpdate();
+}
+
 //Observer Pattern
 //class EventObserver {
 //  constructor() {
@@ -37,20 +41,22 @@ class Http {
 //  }
 //}
 
+//class that gives a unique id from the range(1, 150)
 class RandomNumber {
   constructor() {
     this.usedIds = [];
   }
-  NovoId() {
+  novoId() {
     let Id = Math.floor(Math.random() * 150 + 1);
-    if (this.userIds.includes(Id)) {
-      userIds.push(Id);
+    if (!this.usedIds.includes(Id)) {
+      this.usedIds.push(Id);
       return Id;
     } else {
-      return this.NovoId();
+      return this.novoId();
     }
   }
 }
+const randomId = new RandomNumber();
 
 let animating = false;
 
@@ -88,7 +94,7 @@ const UpdateProfile = (function () {
   let gender = 'female';
   const Update = function (response) {
     profilePicture.src = response.picture.medium;
-    nome.innerText = `${response.name.first} ${response.name.last}`;
+    nome.innerText = `${response.name.first} ${response.name.last} #${randomId.novoId()}`;
     age.innerText = `${response.dob.age} Years`;
     description.innerText = `teste`;
     address.innerText = `${response.location.state}, ${response.location.city}`;
@@ -105,10 +111,13 @@ const UpdateProfile = (function () {
         });
     },
     changeGender: function(){
-      if(genderSwitch.checked)gender = 'male';
-      else gender = 'female';
+      if(genderSwitch.checked){
+      genderSwitch.parentElement.classList = gender = 'male';
+      }
+      else{
+       gender = 'female';
+      genderSwitch.parentElement.classList = "";
+      }
     }
   };
 })();
-
-UpdateProfile.callUpdate();
