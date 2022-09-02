@@ -28,6 +28,15 @@ header h1 {
   color: white;
 }
 
+#gender-container{
+  position: absolute;
+  right: 20%;
+}
+
+#gender{
+  background-color: pink;
+}
+
 nav {
   background-color: rgb(247, 247, 247);
   min-height: 94vh;
@@ -46,22 +55,11 @@ nav {
   display: flex;
   margin-top: 40px;
   overflow: hidden;
-  transition: transform 1s;
+  transition: transform .60s ease;
 }
 
 .liked{
-  animation-name: liked;
-  animation-duration: 1.5s;
-}
-
-@keyframes liked{
-  0%{
-   transform: translate(0);
-  }
-  50%{
-    transform: translateY(-150%);
-  }
-
+    transform: translateY(-120%);
 }
 
 #pessoa img {

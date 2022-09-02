@@ -8,6 +8,7 @@ const age = document.querySelector("#age");
 const description = document.querySelector("#description");
 const address = document.querySelector("#address");
 const info = document.querySelector("#info");
+const genderSwitch = document.querySelector("#gender");
 
 //Http GET request template
 class Http {
@@ -59,19 +60,23 @@ const likeProfile = function () {
   info.classList = "closed";
   setTimeout(() => {
     pessoa.classList = "liked";
-  }, 500);
+  }, 300);
   setTimeout(() => {
     UpdateProfile.callUpdate();
     info.classList = "";
-  }, 1100);
+  }, 700);
   setTimeout(() => {
     pessoa.classList = "";
     animating = false;
-  }, 2000);
+  }, 1500);
 };
 
 likeButton.addEventListener("click", () => {
   if(!animating) likeProfile();
+});
+
+genderSwitch.addEventListener('change', () => {
+  UpdateProfile.changeGender();
 });
 
 //const eventos = new EventObserver();
@@ -80,6 +85,7 @@ likeButton.addEventListener("click", () => {
 
 //Fuctions that updates DOM profile in modular pattern;
 const UpdateProfile = (function () {
+  let gender = 'female';
   const Update = function (response) {
     profilePicture.src = response.picture.medium;
     nome.innerText = `${response.name.first} ${response.name.last}`;
@@ -90,7 +96,7 @@ const UpdateProfile = (function () {
 
   return {
     callUpdate: function () {
-      Http.get("https://randomuser.me/api/?gender=female")
+      Http.get(`https://randomuser.me/api/?gender=${gender}`)
         .then((res) => {
           Update(res.results[0]);
         })
@@ -98,6 +104,10 @@ const UpdateProfile = (function () {
           console.error(err);
         });
     },
+    changeGender: function(){
+      if(genderSwitch.checked)gender = 'male';
+      else gender = 'female';
+    }
   };
 })();
 
