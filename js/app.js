@@ -1,15 +1,17 @@
 //Elements of the DOM
 const likeButton = document.querySelector("#like");
+const denyButton = document.querySelector("#deny");
 const pessoa = document.querySelector("#pessoa");
 const profilePicture = document.querySelector("#profile-pic");
 const nome = document.querySelector("#name");
 const age = document.querySelector("#age");
 const description = document.querySelector("#description");
 const address = document.querySelector("#address");
+const info = document.querySelector("#info");
 
 //Http GET request template
 class Http {
-    static async get(url) {
+  static async get(url) {
     const res = await fetch(url);
     const data = await res.json();
     console.log(data);
@@ -18,47 +20,63 @@ class Http {
 }
 
 //Observer Pattern
-class EventObserver {
+//class EventObserver {
+//  constructor() {
+//    this.activeEvents = [];
+//  }
+//
+//  adicionar(fn) {
+//    this.activeEvents.push(fn);
+//  }
+//
+//  remover(fn) {
+//    this.activeEvents = this.activeEvents.filter((item) => {
+//      if (item !== fn) return item;
+//    });
+//  }
+//}
+
+class RandomNumber {
   constructor() {
-    this.activeEvents = [];
-  }
-
-  adicionar(fn) {
-    this.activeEvents.push(fn);
-  }
-
-  remover(fn) {
-    this.activeEvents = this.activeEvents.filter((item) => {
-      if (item !== fn) return item;
-    });
-  }
-}
-
-class RandomNumber{
-  constructor(){
     this.usedIds = [];
   }
-  NovoId(){
+  NovoId() {
     let Id = Math.floor(Math.random() * 150 + 1);
-    if(this.userIds.includes(Id)){
-      userIds.push(Id)
+    if (this.userIds.includes(Id)) {
+      userIds.push(Id);
       return Id;
-    }
-    else{
+    } else {
       return this.NovoId();
     }
   }
 }
 
+let animating = false;
+
 //Function that calls the like animation and goes to the next profile.
 const likeProfile = function () {
-  pessoa.classList = "liked";
+  animating = true;
+  info.classList = "closed";
+  setTimeout(() => {
+    pessoa.classList = "liked";
+  }, 500);
+  setTimeout(() => {
+    UpdateProfile.callUpdate();
+    info.classList = "";
+  }, 1100);
+  setTimeout(() => {
+    pessoa.classList = "";
+    animating = false;
+  }, 2000);
 };
 
-likeButton.addEventListener("click", likeProfile);
+likeButton.addEventListener("click", () => {
+  if(!animating) likeProfile();
+});
 
-const eventos = new EventObserver();
-eventos.adicionar(likeProfile);
+//const eventos = new EventObserver();
+//eventos.adicionar(likeProfile);
+//eventos.remover(likeProfile);
 
 //Fuctions that updates DOM profile in modular pattern;
 const UpdateProfile = (function () {
@@ -72,8 +90,7 @@ const UpdateProfile = (function () {
 
   return {
     callUpdate: function () {
-      Http
-        .get("https://randomuser.me/api/?gender=female")
+      Http.get("https://randomuser.me/api/?gender=female")
         .then((res) => {
           Update(res.results[0]);
         })
