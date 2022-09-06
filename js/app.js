@@ -1,14 +1,23 @@
 //Elements of the DOM
+
+//3 Main buttons for options
 const likeButton = document.querySelector("#like");
 const denyButton = document.querySelector("#deny");
 const superButton = document.querySelector("#superlike");
+
+//The information containers for the curent profile.
 const profilePicture = document.querySelector("#profile-pic");
 const nome = document.querySelector("#name");
 const age = document.querySelector("#age");
 const description = document.querySelector("#description");
 const address = document.querySelector("#address");
 const info = document.querySelector("#info");
+
+//The checkbox that is used to change the gender and the ball container used to represent the gender.
 const genderSwitch = document.querySelector("#gender");
+const ball = document.querySelector("#ball");
+
+//Container used for the next user animation
 const changeContainer = document.querySelector("#changeContainer");
 
 //Http GET request template
@@ -21,9 +30,50 @@ class Http {
   }
 }
 
+//Calling the first profile on page load
 window.onload = () => {
-  UpdateProfile.callUpdate();
+  updateProfile.callUpdate();
 };
+
+const UpdateNumbers = (function () {
+  //The h3 tags at the bottom of the page each representing the options
+  const numberLikes = document.querySelector("#likes");
+  const numberDenys = document.querySelector("#denys");
+  const numberSuperLikes = document.querySelector("#superlikes");
+  const matches = document.querySelector("#matches");
+  const numberTotal = document.querySelector("#total");
+
+  let total = 0;
+  let match = 0;
+  const numbers = {
+    likes: 0,
+    denys: 0,
+    superLikes: 0,
+    //Updates the footer of the DOM
+    updateNumbers: function () {
+      numberLikes.innerText = `Likes: ${this.likes} - ${
+        ((this.likes / total) * 100).toFixed(1)
+      }%`;
+      numberDenys.innerText = `Dennies: ${this.denys} - ${
+        ((this.denys / total) * 100).toFixed(1)
+      }%`;
+      numberSuperLikes.innerText = `Super Likes: ${this.superLikes} - ${
+        ((this.superLikes / total) * 100).toFixed(1)
+      }%`;
+      matches.innerText = `Matches: ${match} - ${((match / total) * 100).toFixed(1)}%`;
+      numberTotal.innerText = `Total de pessoas: ${total}`;
+    },
+  };
+
+  return {
+    //Recives the option and adds the current option
+    add: function (type) {
+      numbers[type]++;
+      total++;
+      numbers.updateNumbers();
+    },
+  };
+})();
 
 //Observer Pattern
 //class EventObserver {
@@ -42,13 +92,14 @@ window.onload = () => {
 //  }
 //}
 
-//class that gives a unique id from the range(1, 150)
+//class that gives a unique id from the the range given.
 class RandomNumber {
-  constructor() {
+  constructor(max) {
     this.usedIds = [];
+    this.max = max;
   }
   novoId() {
-    let Id = Math.floor(Math.random() * 150 + 1);
+    let Id = Math.floor(Math.random() * this.max + 1);
     if (!this.usedIds.includes(Id)) {
       this.usedIds.push(Id);
       return Id;
@@ -57,53 +108,35 @@ class RandomNumber {
     }
   }
 }
-const randomId = new RandomNumber();
 
+// New instance of the Random number class
+const randomId = new RandomNumber(150);
+
+//Variable that is true if there is any animation playing
 let animating = false;
 
-//Function that calls the like animation and goes to the next profile.
-const nextProfile = function (color, icon) {
-  animating = true;
-  changeContainer.classList = "closed";
-  changeContainer.style.backgroundColor = `var(--${color})`;
-  changeContainer.querySelector('span').innerHTML = icon;
 
-  setTimeout(() => {
-    pessoa.classList = "next";
-  }, 300);
-  setTimeout(() => {
-    UpdateProfile.callUpdate();
-    changeContainer.classList = "";
-  }, 700);
-  setTimeout(() => {
-    pessoa.classList = "";
-    animating = false;
-  }, 1700);
-};
-
+//EventListeners for the options buttons
 likeButton.addEventListener("click", () => {
-  if (!animating) nextProfile('green', 'thumb_up');
+  if (!animating) updateProfile.nextProfile("green", "thumb_up", "likes");
 });
 
 denyButton.addEventListener("click", () => {
-  if (!animating) nextProfile('red', 'thumb_down');
+  if (!animating) updateProfile.nextProfile("red", "thumb_down", "denys");
 });
 
 superButton.addEventListener("click", () => {
-  if (!animating) nextProfile('blue', 'star');
+  if (!animating) updateProfile.nextProfile("blue", "star", "superLikes");
 });
 
 genderSwitch.addEventListener("change", () => {
-  UpdateProfile.changeGender();
+  updateProfile.changeGender();
 });
 
-//const eventos = new EventObserver();
-//eventos.adicionar(likeProfile);
-//eventos.remover(likeProfile);
-
 //Fuctions that updates DOM profile in modular pattern;
-const UpdateProfile = (function () {
+const updateProfile = (function () {
   let gender = "female";
+
   const Update = function (response) {
     profilePicture.src = response.picture.medium;
     nome.innerText = `${response.name.first} ${
@@ -115,6 +148,7 @@ const UpdateProfile = (function () {
   };
 
   return {
+
     callUpdate: function () {
       Http.get(`https://randomuser.me/api/?gender=${gender}`)
         .then((res) => {
@@ -124,13 +158,36 @@ const UpdateProfile = (function () {
           console.error(err);
         });
     },
+
     changeGender: function () {
       if (genderSwitch.checked) {
-        genderSwitch.parentElement.classList = gender = "male";
+        gender = ball.classList = "male";
+        ball.querySelector("span").innerHTML = "male";
       } else {
         gender = "female";
-        genderSwitch.parentElement.classList = "";
+        ball.classList = "";
+        ball.querySelector("span").innerHTML = "female";
       }
+    },
+
+    nextProfile: function (color, icon, type) {
+      animating = true;
+      changeContainer.classList = "closed";
+      changeContainer.style.backgroundColor = `var(--${color})`;
+      changeContainer.querySelector("span").innerHTML = icon;
+      UpdateNumbers.add(type);
+
+      setTimeout(() => {
+        pessoa.classList = "next";
+      }, 300);
+      setTimeout(() => {
+        this.callUpdate();
+        changeContainer.classList = "";
+      }, 700);
+      setTimeout(() => {
+        pessoa.classList = "";
+        animating = false;
+      }, 1700);
     },
   };
 })();
