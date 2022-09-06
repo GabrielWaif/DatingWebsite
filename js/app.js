@@ -12,6 +12,8 @@ const age = document.querySelector("#age");
 const description = document.querySelector("#description");
 const address = document.querySelector("#address");
 const info = document.querySelector("#info");
+const time = document.querySelector("#used-time");
+const phoneNumber = document.querySelector("#phone");
 
 //The checkbox that is used to change the gender and the ball container used to represent the gender.
 const genderSwitch = document.querySelector("#gender");
@@ -28,7 +30,6 @@ class Http {
   static async get(url) {
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data);
     return data;
   }
 }
@@ -141,13 +142,15 @@ const updateProfile = (function () {
   let match = isMatch();
 
   const update = function (response) {
-    currentPhoto = profilePicture.src = response.picture.medium;
+    currentPhoto = profilePicture.src = response.picture.large;
     nome.innerText = `${response.name.first} ${
       response.name.last
     } #${randomId.novoId()}`;
     age.innerText = `${response.dob.age} Years`;
-    description.innerText = `teste`;
+    description.innerText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac tincidunt libero. Nullam ac consequat enim. Suspendisse rutrum nulla eu justo elementum, in faucibus elit iaculis.`;
     address.innerText = `${response.location.state}, ${response.location.city}`;
+    time.innerText = `${response.registered.age} months`;
+    phoneNumber.innerText = `${response.phone}`;
   };
 
   const matchAnimation = function(){
