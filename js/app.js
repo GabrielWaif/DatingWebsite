@@ -35,10 +35,10 @@ window.onload = () => {
   updateProfile.callUpdate();
 };
 
-const UpdateNumbers = (function () {
+const updateNumbers = (function () {
   //The h3 tags at the bottom of the page each representing the options
   const numberLikes = document.querySelector("#likes");
-  const numberDenys = document.querySelector("#denys");
+  const numberDenies = document.querySelector("#denies");
   const numberSuperLikes = document.querySelector("#superlikes");
   const matches = document.querySelector("#matches");
   const numberTotal = document.querySelector("#total");
@@ -47,20 +47,26 @@ const UpdateNumbers = (function () {
   let match = 0;
   const numbers = {
     likes: 0,
-    denys: 0,
+    denies: 0,
     superLikes: 0,
     //Updates the footer of the DOM
     updateNumbers: function () {
-      numberLikes.innerText = `Likes: ${this.likes} - ${
-        ((this.likes / total) * 100).toFixed(1)
-      }%`;
-      numberDenys.innerText = `Dennies: ${this.denys} - ${
-        ((this.denys / total) * 100).toFixed(1)
-      }%`;
-      numberSuperLikes.innerText = `Super Likes: ${this.superLikes} - ${
-        ((this.superLikes / total) * 100).toFixed(1)
-      }%`;
-      matches.innerText = `Matches: ${match} - ${((match / total) * 100).toFixed(1)}%`;
+      numberLikes.innerText = `Likes: ${this.likes} - ${(
+        (this.likes / total) *
+        100
+      ).toFixed(1)}%`;
+      numberDenies.innerText = `Dennies: ${this.denies} - ${(
+        (this.denies / total) *
+        100
+      ).toFixed(1)}%`;
+      numberSuperLikes.innerText = `Super Likes: ${this.superLikes} - ${(
+        (this.superLikes / total) *
+        100
+      ).toFixed(1)}%`;
+      matches.innerText = `Matches: ${match} - ${(
+        (match / total) *
+        100
+      ).toFixed(1)}%`;
       numberTotal.innerText = `Total de pessoas: ${total}`;
     },
   };
@@ -115,14 +121,13 @@ const randomId = new RandomNumber(150);
 //Variable that is true if there is any animation playing
 let animating = false;
 
-
 //EventListeners for the options buttons
 likeButton.addEventListener("click", () => {
   if (!animating) updateProfile.nextProfile("green", "thumb_up", "likes");
 });
 
 denyButton.addEventListener("click", () => {
-  if (!animating) updateProfile.nextProfile("red", "thumb_down", "denys");
+  if (!animating) updateProfile.nextProfile("red", "thumb_down", "denies");
 });
 
 superButton.addEventListener("click", () => {
@@ -137,7 +142,18 @@ genderSwitch.addEventListener("change", () => {
 const updateProfile = (function () {
   let gender = "female";
 
-  const Update = function (response) {
+  const isMatch = function () {
+    const id = Math.floor(Math.random() * 10 + 1);
+    console.log(id);
+    if (id === 10) {
+      return true;
+    }
+    return false;
+  };
+
+  let match = isMatch();
+
+  const update = function (response) {
     profilePicture.src = response.picture.medium;
     nome.innerText = `${response.name.first} ${
       response.name.last
@@ -148,11 +164,10 @@ const updateProfile = (function () {
   };
 
   return {
-
     callUpdate: function () {
       Http.get(`https://randomuser.me/api/?gender=${gender}`)
         .then((res) => {
-          Update(res.results[0]);
+          update(res.results[0]);
         })
         .catch((err) => {
           console.error(err);
@@ -175,13 +190,19 @@ const updateProfile = (function () {
       changeContainer.classList = "closed";
       changeContainer.style.backgroundColor = `var(--${color})`;
       changeContainer.querySelector("span").innerHTML = icon;
-      UpdateNumbers.add(type);
+      if (match && (type === "likes" || type == "superLikes")) {
+        alert("match");
+        updateNumbers.add("match");
+      } else {
+        updateNumbers.add(type);
+      }
 
       setTimeout(() => {
         pessoa.classList = "next";
       }, 300);
       setTimeout(() => {
         this.callUpdate();
+        match = isMatch();
         changeContainer.classList = "";
       }, 700);
       setTimeout(() => {

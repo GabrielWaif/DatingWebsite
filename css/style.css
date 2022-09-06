@@ -201,7 +201,19 @@ nav {
 
 footer{
   width: 100%;
-  background-color: aqua;
+  background-color: rgb(29, 29, 117);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#percentages{
+  padding: 50px 0;
+}
+
+#percentages h1{
+  padding-bottom: 10px;
+  color: white;
 }
 
 @media (max-height: 900px) {
