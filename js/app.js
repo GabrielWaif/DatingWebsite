@@ -20,6 +20,9 @@ const ball = document.querySelector("#ball");
 //Container used for the next user animation
 const changeContainer = document.querySelector("#changeContainer");
 
+//Button that returns from the match to screen
+const matchBack = document.querySelector("#match-back");
+
 //Http GET request template
 class Http {
   static async get(url) {
@@ -44,8 +47,8 @@ const updateNumbers = (function () {
   const numberTotal = document.querySelector("#total");
 
   let total = 0;
-  let match = 0;
   const numbers = {
+  match: 0,
     likes: 0,
     denies: 0,
     superLikes: 0,
@@ -55,7 +58,7 @@ const updateNumbers = (function () {
         (this.likes / total) *
         100
       ).toFixed(1)}%`;
-      numberDenies.innerText = `Dennies: ${this.denies} - ${(
+      numberDenies.innerText = `Denies: ${this.denies} - ${(
         (this.denies / total) *
         100
       ).toFixed(1)}%`;
@@ -63,8 +66,8 @@ const updateNumbers = (function () {
         (this.superLikes / total) *
         100
       ).toFixed(1)}%`;
-      matches.innerText = `Matches: ${match} - ${(
-        (match / total) *
+      matches.innerText = `Matches: ${this.match} - ${(
+        (this.match / total) *
         100
       ).toFixed(1)}%`;
       numberTotal.innerText = `Total de pessoas: ${total}`;
@@ -80,23 +83,6 @@ const updateNumbers = (function () {
     },
   };
 })();
-
-//Observer Pattern
-//class EventObserver {
-//  constructor() {
-//    this.activeEvents = [];
-//  }
-//
-//  adicionar(fn) {
-//    this.activeEvents.push(fn);
-//  }
-//
-//  remover(fn) {
-//    this.activeEvents = this.activeEvents.filter((item) => {
-//      if (item !== fn) return item;
-//    });
-//  }
-//}
 
 //class that gives a unique id from the the range given.
 class RandomNumber {
@@ -141,10 +127,11 @@ genderSwitch.addEventListener("change", () => {
 //Fuctions that updates DOM profile in modular pattern;
 const updateProfile = (function () {
   let gender = "female";
+  let currentPhoto;
 
+  //10% chance for the current profile to be a match
   const isMatch = function () {
     const id = Math.floor(Math.random() * 10 + 1);
-    console.log(id);
     if (id === 10) {
       return true;
     }
@@ -154,7 +141,7 @@ const updateProfile = (function () {
   let match = isMatch();
 
   const update = function (response) {
-    profilePicture.src = response.picture.medium;
+    currentPhoto = profilePicture.src = response.picture.medium;
     nome.innerText = `${response.name.first} ${
       response.name.last
     } #${randomId.novoId()}`;
@@ -162,6 +149,12 @@ const updateProfile = (function () {
     description.innerText = `teste`;
     address.innerText = `${response.location.state}, ${response.location.city}`;
   };
+
+  const matchAnimation = function(){
+        document.querySelector('nav').style.display ='none';
+        document.querySelector('#match-screen').style.display ='flex';
+        document.querySelector('#match-photo').src = currentPhoto;
+  }
 
   return {
     callUpdate: function () {
@@ -191,7 +184,7 @@ const updateProfile = (function () {
       changeContainer.style.backgroundColor = `var(--${color})`;
       changeContainer.querySelector("span").innerHTML = icon;
       if (match && (type === "likes" || type == "superLikes")) {
-        alert("match");
+        matchAnimation();
         updateNumbers.add("match");
       } else {
         updateNumbers.add(type);
@@ -212,3 +205,8 @@ const updateProfile = (function () {
     },
   };
 })();
+
+matchBack.addEventListener('click', () => {
+        document.querySelector('nav').style.display ='flex';
+        document.querySelector('#match-screen').style.display ='none';
+});

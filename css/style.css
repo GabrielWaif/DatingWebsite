@@ -69,9 +69,9 @@ header h1 {
 }
 
 nav {
+  display: flex;
   background-color: rgb(247, 247, 247);
   min-height: 94vh;
-  display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
@@ -93,7 +93,6 @@ nav {
 .next{
     transform: translateY(-120%);
 }
-
 
 #pessoa img {
   width: 50%;
@@ -155,6 +154,7 @@ nav {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  margin-bottom: 40px;
 }
 
 
@@ -197,6 +197,42 @@ nav {
 
 #superlike{
     color: var(--blue);
+}
+
+#match-screen{
+  display: none;
+  background-color: var(--blue);
+  min-height: 94vh;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+#match-screen h1{
+  margin-top: 50px;
+  font-size: 80px;
+}
+
+#match-screen img{
+  border-radius: 20px;
+  margin: 60px 0;
+  width: 500px;
+}
+
+#match-screen button{
+  width: 300px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 20px;
+  background-color: brown;
+  color: white;
+  border: none;
+  transition: background-color .2s;
+}
+
+
+#match-screen button:hover{
+  background-color: rgb(90, 9, 9);
 }
 
 footer{
