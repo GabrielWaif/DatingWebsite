@@ -9,6 +9,7 @@ const description = document.querySelector("#description");
 const address = document.querySelector("#address");
 const info = document.querySelector("#info");
 const genderSwitch = document.querySelector("#gender");
+const changeContainer = document.querySelector("#changeContainer");
 
 //Http GET request template
 class Http {
@@ -22,7 +23,7 @@ class Http {
 
 window.onload = () => {
   UpdateProfile.callUpdate();
-}
+};
 
 //Observer Pattern
 //class EventObserver {
@@ -63,13 +64,13 @@ let animating = false;
 //Function that calls the like animation and goes to the next profile.
 const likeProfile = function () {
   animating = true;
-  info.classList = "closed";
+  changeContainer.classList = "closed";
   setTimeout(() => {
     pessoa.classList = "liked";
   }, 300);
   setTimeout(() => {
     UpdateProfile.callUpdate();
-    info.classList = "";
+    changeContainer.classList = "";
   }, 700);
   setTimeout(() => {
     pessoa.classList = "";
@@ -78,10 +79,10 @@ const likeProfile = function () {
 };
 
 likeButton.addEventListener("click", () => {
-  if(!animating) likeProfile();
+  if (!animating) likeProfile();
 });
 
-genderSwitch.addEventListener('change', () => {
+genderSwitch.addEventListener("change", () => {
   UpdateProfile.changeGender();
 });
 
@@ -91,10 +92,12 @@ genderSwitch.addEventListener('change', () => {
 
 //Fuctions that updates DOM profile in modular pattern;
 const UpdateProfile = (function () {
-  let gender = 'female';
+  let gender = "female";
   const Update = function (response) {
     profilePicture.src = response.picture.medium;
-    nome.innerText = `${response.name.first} ${response.name.last} #${randomId.novoId()}`;
+    nome.innerText = `${response.name.first} ${
+      response.name.last
+    } #${randomId.novoId()}`;
     age.innerText = `${response.dob.age} Years`;
     description.innerText = `teste`;
     address.innerText = `${response.location.state}, ${response.location.city}`;
@@ -110,14 +113,13 @@ const UpdateProfile = (function () {
           console.error(err);
         });
     },
-    changeGender: function(){
-      if(genderSwitch.checked){
-      genderSwitch.parentElement.classList = gender = 'male';
+    changeGender: function () {
+      if (genderSwitch.checked) {
+        genderSwitch.parentElement.classList = gender = "male";
+      } else {
+        gender = "female";
+        genderSwitch.parentElement.classList = "";
       }
-      else{
-       gender = 'female';
-      genderSwitch.parentElement.classList = "";
-      }
-    }
+    },
   };
 })();
