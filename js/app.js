@@ -1,7 +1,7 @@
 //Elements of the DOM
 const likeButton = document.querySelector("#like");
 const denyButton = document.querySelector("#deny");
-const pessoa = document.querySelector("#pessoa");
+const superButton = document.querySelector("#superlike");
 const profilePicture = document.querySelector("#profile-pic");
 const nome = document.querySelector("#name");
 const age = document.querySelector("#age");
@@ -62,11 +62,14 @@ const randomId = new RandomNumber();
 let animating = false;
 
 //Function that calls the like animation and goes to the next profile.
-const likeProfile = function () {
+const nextProfile = function (color, icon) {
   animating = true;
   changeContainer.classList = "closed";
+  changeContainer.style.backgroundColor = `var(--${color})`;
+  changeContainer.querySelector('span').innerHTML = icon;
+
   setTimeout(() => {
-    pessoa.classList = "liked";
+    pessoa.classList = "next";
   }, 300);
   setTimeout(() => {
     UpdateProfile.callUpdate();
@@ -75,11 +78,19 @@ const likeProfile = function () {
   setTimeout(() => {
     pessoa.classList = "";
     animating = false;
-  }, 1500);
+  }, 1700);
 };
 
 likeButton.addEventListener("click", () => {
-  if (!animating) likeProfile();
+  if (!animating) nextProfile('green', 'thumb_up');
+});
+
+denyButton.addEventListener("click", () => {
+  if (!animating) nextProfile('red', 'thumb_down');
+});
+
+superButton.addEventListener("click", () => {
+  if (!animating) nextProfile('blue', 'star');
 });
 
 genderSwitch.addEventListener("change", () => {

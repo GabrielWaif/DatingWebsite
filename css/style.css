@@ -86,9 +86,10 @@ nav {
   transition: transform .60s ease;
 }
 
-.liked{
+.next{
     transform: translateY(-120%);
 }
+
 
 #pessoa img {
   width: 50%;
@@ -103,7 +104,6 @@ nav {
 
 #changeContainer{
   content: '';
-  background-color: var(--green);
   position: absolute;
   width: 100%;
   height: 100%;
@@ -122,6 +122,10 @@ nav {
 
 .closed{
   transform: translateY(100%);
+}
+
+.liked{
+  background-color: var(--green);
 }
 
 #info h1, p, h2{
