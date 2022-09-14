@@ -166,7 +166,8 @@ const updateProfile = (function () {
           update(res.results[0]);
         })
         .catch((err) => {
-          console.error(err);
+          alert('Api Server is down now! there may be connection problems, try again later');
+          window.location = 'https://gabrielwaif.github.io/Portfolio01/';
         });
     },
 
